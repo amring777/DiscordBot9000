@@ -1,24 +1,62 @@
-import discord
+# Using Python 3.6, this script will not work with 3.7 at the current moment
+import random
+import asyncio
+import aiohttp
+import json
+from discord import Game
+from discord.ext.commands import Bot
 
-TOKEN = 'INSERT TOKEN HERE'
+BOT_PREFIX = ("$")
+TOKEN = "INSERT_TOKEN_HERE"  #Go get a token at discordapp.com/developers/applications
 
-client = discord.Client()
+client = Bot(command_prefix=BOT_PREFIX)
+
+@client.command(name='8ball',
+                description="Answers a yes/no question.",
+                brief="Answers from the beyond.",
+                aliases=['eight_ball', 'eightball', '8-ball'],
+                pass_context=True)
+async def eight_ball(context): #get a random fortune for the user
+    possible_responses = [
+        'That is a resounding no',
+        'It is not looking likely',
+        'Too hard to tell',
+        'It is quite possible',
+        'Definitely',
+    ]
+    await client.say(random.choice(possible_responses) + ", " + context.message.author.mention)
+
+
+@client.command()
+async def square(number): #find the square of the given number
+    squared_value = int(number) * int(number)
+    await client.say(str(number) + " squared is " + str(squared_value))
+
 
 @client.event
-async def on_message(message):
-    # we do not want the bot to reply to itself
-    if message.author == client.user:
-        return
+async def on_ready(): #set the name of what the bot is "Playing"
+    await client.change_presence(game=Game(name="with humans"))
+    print("Logged in as " + client.user.name)
 
-    if message.content.startswith('$hello'):
-        msg = 'Hello {0.author.mention}'.format(message)
-        await client.send_message(message.channel, msg)
 
-@client.event
-async def on_ready():
-    print('Logged in as')
-    print(client.user.name)
-    print(client.user.id)
-    print('------')
+@client.command()
+async def bitcoin(): #find the current price of bitcoin
+    url = 'https://api.coindesk.com/v1/bpi/currentprice/BTC.json'
+    async with aiohttp.ClientSession() as session:  # Async HTTP request
+        raw_response = await session.get(url)
+        response = await raw_response.text()
+        response = json.loads(response)
+        await client.say("Bitcoin price is: $" + response['bpi']['USD']['rate'])
 
+
+async def list_servers(): #list all servers currently in
+    await client.wait_until_ready()
+    while not client.is_closed:
+        print("Current servers:")
+        for server in client.servers:
+            print(server.name)
+        await asyncio.sleep(600)
+
+
+client.loop.create_task(list_servers()) #print servers currently in
 client.run(TOKEN)
