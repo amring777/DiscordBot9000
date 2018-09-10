@@ -7,7 +7,8 @@ from discord import Game
 from discord.ext.commands import Bot
 
 BOT_PREFIX = ("$")
-TOKEN = "INSERT_TOKEN_HERE"  #Go get a token at discordapp.com/developers/applications
+file = open('token.txt', 'r')
+TOKEN = file.readline().strip()  #Go get a token at discordapp.com/developers/applications.  Place the token in a file called "token.txt" in the same directory as this script
 
 client = Bot(command_prefix=BOT_PREFIX)
 
