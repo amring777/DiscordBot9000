@@ -12,6 +12,10 @@ TOKEN = file.readline().strip()  #Go get a token at discordapp.com/developers/ap
 
 client = Bot(command_prefix=BOT_PREFIX)
 
+@client.command()
+async def github():
+    await client.say("Learn more about this bot at https://github.com/amring777/DiscordBot9000")
+
 @client.command(name='8ball',
                 description="Answers a yes/no question.",
                 brief="Answers from the beyond.",
