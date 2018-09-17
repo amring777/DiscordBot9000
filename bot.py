@@ -9,6 +9,7 @@ from discord.ext.commands import Bot
 BOT_PREFIX = ("$")
 file = open('token.txt', 'r')
 TOKEN = file.readline().strip()  #Go get a token at discordapp.com/developers/applications.  Place the token in a file called "token.txt" in the same directory as this script
+file.close()
 
 client = Bot(command_prefix=BOT_PREFIX)
 
