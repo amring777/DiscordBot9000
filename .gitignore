@@ -137,5 +137,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-token.txt
 .vscode/settings.json
+
+#token file
+token.txt

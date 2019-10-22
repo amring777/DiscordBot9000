@@ -1,4 +1,3 @@
-# Using Python 3.6, this script will not work with 3.7 at the current moment
 import random
 import asyncio
 import aiohttp
@@ -12,7 +11,7 @@ TOKEN = file.readline().strip()  #Go get a token at discordapp.com/developers/ap
 file.close()
 
 client = Bot(command_prefix=BOT_PREFIX)
-client.activity = Game("with Bjorn")
+client.activity = Game("with Bjorn the Fell Handed")
 
 @client.command(brief="The Github page for this bot") #link the github page for this bot
 async def github(message):
@@ -53,17 +52,15 @@ async def eight_ball(message): #get a random fortune for the user
     ]
     await message.channel.send(random.choice(possible_responses) + ", " + message.message.author.mention)
 
-
 @client.command(brief="Square a number.")
 async def square(message, number): #find the square of the given number
     squared_value = int(number) * int(number)
     await message.channel.send(str(number) + " squared is " + str(squared_value))
 
-
 @client.event
-async def on_ready(): #set the name of what the bot is "Playing"
+async def on_ready():
     print("Logged in as " + client.user.name)
-
+    asyncio.create_task(list_servers()) #print servers currently in
 
 @client.command(brief="Get the current price of bitcoin")
 async def bitcoin(message): #find the current price of bitcoin
@@ -74,15 +71,12 @@ async def bitcoin(message): #find the current price of bitcoin
         response = json.loads(response)
         await message.channel.send("Bitcoin price is: $" + response['bpi']['USD']['rate'])
 
-
 async def list_servers(): #list all servers currently in
     await client.wait_until_ready()
-    while not client.is_closed:
+    while not client.is_closed():
         print("Current servers:")
-        for server in client.servers:
-            print(server.name)
+        for guild in client.guilds:
+            print(guild.name)
         await asyncio.sleep(600)
 
-
-client.loop.create_task(list_servers()) #print servers currently in
 client.run(TOKEN)
