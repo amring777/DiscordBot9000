@@ -60,7 +60,8 @@ async def square(number): #find the square of the given number
 
 @client.event
 async def on_ready(): #set the name of what the bot is "Playing"
-    await client.change_presence(game=Game(name="with Bjorn the Fell Handed"))
+    activity = discord.Game(name="with Bjorn the Fell Handed")
+    await client.change_presence(status=discord.Status.idle, activity=activity)
     print("Logged in as " + client.user.name)
 
 
