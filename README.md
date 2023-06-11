@@ -1,4 +1,5 @@
 # DiscordBot9000
+## This no longer works with how python and discord bots have changed.
 ## A fun Discord bot written in Python
 ## Instructions
 1. Get a bot token from discordapp.com/developers/applications.  
